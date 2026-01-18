@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: weather-app-api-config
+  name: weather-api-config
   namespace: weather-app
   labels:
     project: weather-app

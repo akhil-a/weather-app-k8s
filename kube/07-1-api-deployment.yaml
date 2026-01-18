@@ -1,0 +1,78 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-api-v1
+  namespace: weather-app
+  labels:
+    project: weather-app
+    app: api
+    version: version1
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      project: weather-app
+      app: api
+      version: version1
+  template:
+    metadata:
+      labels:
+        project: weather-app
+        app: api
+        version: version1
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: project
+                    operator: In
+                    values:
+                      - weather-app
+                  - key: app
+                    operator: In
+                    values:
+                      - api
+      containers:
+        - name: weather-api
+          image: akhilanilkumar10/weather-api:v1
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: weather-api-config
+            - secretRef:
+                name: weather-api-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "100m"
+              memory: "200Mi"
+
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 8080
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            successThreshold: 2
+            failureThreshold: 2
+            timeoutSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 8080
+            initialDelaySeconds: 40
+            periodSeconds: 5
+            failureThreshold: 2
+            timeoutSeconds: 2
