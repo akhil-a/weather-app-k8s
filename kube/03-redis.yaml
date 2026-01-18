@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ipgeolocation-redis
+  namespace: ipgeolocation
+  labels:
+    project: ipgeolocation
+    role: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      project: ipgeolocation
+      app: redis
+  template:
+    metadata:
+      labels:
+        project: ipgeolocation
+        role: redis
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: project
+                operator: In
+                values:
+                - ipgeolocation
+              - key: app
+                operator: In
+                values:
+                - redis
+      tolerations:
+      - key: "redis"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      containers:
+      - name: redis
+        image: redis:alpine
+        ports:
+        - containerPort: 6379
