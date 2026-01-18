@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ipgeolocation-api-config
-  namespace: ipgeolocation
+  name: weather-app-api-config
+  namespace: weather-app
   labels:
-    project: ipgeolocation
+    project: weather-app
     app: api
 data:
   REDIS_PORT: "6379"
-  REDIS_HOST: "ipgeolocation-redis.ipgeolocation.svc.cluster.local"
+  REDIS_HOST: "weather-app-redis.ipgeolocation.svc.cluster.local"
   APP_PORT: "8080"
   READINESS_DELAY_SEC: "30"

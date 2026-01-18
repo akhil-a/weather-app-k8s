@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ipgeolocation-redis
-  namespace: ipgeolocation
+  name: weather-app-redis
+  namespace: weather-app
   labels:
     project: ipgeolocation
-    role: redis
+    app: redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      project: ipgeolocation
+      project: weather-app
       app: redis
   template:
     metadata:
       labels:
-        project: ipgeolocation
-        role: redis
+        project: weather-app
+        app: redis
     spec:
       affinity:
         nodeAffinity:
@@ -27,7 +27,7 @@ spec:
               - key: project
                 operator: In
                 values:
-                - ipgeolocation
+                - weather-app
               - key: app
                 operator: In
                 values:

@@ -2,15 +2,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ipgeolocation-redis
-  namespace: ipgeolocation
+  name: weather-app-redis
+  namespace: weather-app
   labels:
-    project: ipgeolocation
+    project: weather-app
     app: redis
 spec:
   type: ClusterIP
   selector:
-    project: ipgeolocation
+    project: weather-app
     app: redis
   ports:
   - port: 6379

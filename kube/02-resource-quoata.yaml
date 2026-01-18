@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: ipgeolocation-quota
-  namespace: ipgeolocation
+  namespace: weather-app
 spec:
   hard:
     pods: "15"
